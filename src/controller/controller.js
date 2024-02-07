@@ -4,6 +4,10 @@ class Controller {
         this.model = model;    
 
     }
+
+    static async CreateUser(){
+        
+    }
 }
 
 export default Controller

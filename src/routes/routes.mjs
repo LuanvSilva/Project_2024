@@ -18,7 +18,7 @@ class Router {
 
         })
 
-        this.router.post( "/teste", (req,res) =>{
+        this.router.post( "/teste", (req, res) =>{
 
             const data = req.body
             console.log(data)
