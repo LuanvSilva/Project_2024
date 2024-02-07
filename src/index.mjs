@@ -1,7 +1,7 @@
 import express from 'express'
-import http from 'http'
-import Config from './config/config.mjs'
-import Router from './routes/routes.mjs'
+import  http  from 'http'
+import  Config  from './config/config.mjs'
+import  Router  from './routes/routes.mjs'
 
 class App {
 
@@ -28,16 +28,16 @@ class App {
     this.express.use('/', await this.routers.LoadRouter()) 
   }
 
-  async Load() {
+ async Load() {
 
     let dados = await this.config.Load()
-    await this.StartServer(this.express, dados.db.port)
+    await this.StartServer(this.express, dados.db.port, dados.db.host)
     
 
   }
 
 
-  async StartServer(app, port) {
+  async StartServer(app, port, host) {
 
       this.server = this.http.createServer(app)
       this.server.listen(port)
@@ -46,5 +46,4 @@ class App {
   }
 
 }
-
 new App().Load()

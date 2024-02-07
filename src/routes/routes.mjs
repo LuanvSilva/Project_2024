@@ -18,11 +18,11 @@ class Router {
 
         })
 
-        this.router.post( "/teste", (req, res) =>{
+        this.router.post( "/clientes/[id]/transacoes", (req, res) =>{
 
             const data = req.body
             console.log(data)
-            res.status(200).write("Ok")
+            res.json()
 
         })
 
@@ -35,4 +35,4 @@ class Router {
 
 }
 
-export default Router
+export default  Router 

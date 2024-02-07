@@ -9,7 +9,7 @@
 
         let config = {}
         config.db = {}
-        config.db.host = process.env || null
+        config.db.host = process.env.HOST || '0.0.0.0'
         config.db.port = process.env.PORT || 3000
         config.db.database = process.env || null
         config.db.password = process.env || null
@@ -24,4 +24,4 @@
 
 
 
- export default  Config  
+ export default   Config   
