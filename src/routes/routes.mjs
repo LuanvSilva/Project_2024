@@ -15,12 +15,12 @@ class Router {
         this.router.get("/", (req, res)=>{
 
             res.end('Hello word')
-            
+
         })
 
         this.router.post( "/teste", (req,res) =>{
 
-            const data = req.body;
+            const data = req.body
             console.log(data)
             res.status(200).write("Ok")
 
