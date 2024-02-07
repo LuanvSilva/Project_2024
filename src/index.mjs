@@ -31,13 +31,13 @@ class App {
   async Load() {
 
     let dados = await this.config.Load()
-    await this.ExecutarServidor(this.express, dados.db.port)
+    await this.StartServer(this.express, dados.db.port)
     
 
   }
 
 
-  async ExecutarServidor(app, port) {
+  async StartServer(app, port) {
 
       this.server = this.http.createServer(app)
       this.server.listen(port)
