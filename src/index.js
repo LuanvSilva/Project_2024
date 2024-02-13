@@ -1,7 +1,7 @@
 import express from 'express'
 import  http  from 'http'
-import  Config  from './config/config.mjs'
-import  Router  from './routes/routes.mjs'
+import  Config  from './config/config.js'
+import  Router  from './routes/routes.js'
 
 class App {
 
@@ -32,7 +32,7 @@ class App {
 
     let dados = await this.config.Load()
     await this.StartServer(this.express, dados.db.port, dados.db.host)
-    
+
 
   }
 
