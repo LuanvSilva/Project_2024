@@ -1,7 +1,7 @@
 import express from 'express'
 import  http  from 'http'
 import  Config  from './config/config.js'
-import  Router  from './routes/routes.js'
+import  Router  from './routers/routers.js'
 
 class App {
 
