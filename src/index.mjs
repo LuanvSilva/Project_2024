@@ -28,7 +28,7 @@ class App {
     this.express.use('/', await this.routers.LoadRouter()) 
   }
 
- async Load() {
+  async Load() {
 
     let dados = await this.config.Load()
     await this.StartServer(this.express, dados.db.port, dados.db.host)
