@@ -1,6 +1,6 @@
 // No seu arquivo routes.mjs
 import  express  from "express"
-
+import UserController from "../controller/userController.js"
 
 class Router {
 
@@ -12,10 +12,27 @@ class Router {
 
  async LoadRouter(){
     
-        this.router.get("/", (req, res)=>{
+        this.router.get("/", async (req, res)=>{
 
-            res.end('Hello word')
+            try {
 
+                let user_controller = new UserController()
+
+                let result = await user_controller.GetUser(req)
+        
+                if (result != false) {
+        
+                    res.end(JSON.stringify(result.rows))
+                }
+
+            } catch (error) {
+
+                console.log("Erro no get da rota /")
+                console.log("Erro: ", error)
+
+                
+            }
+    
         })
 
         this.router.post( "/clientes/[id]/transacoes", (req, res) =>{

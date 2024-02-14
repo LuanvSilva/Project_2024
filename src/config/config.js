@@ -8,12 +8,15 @@
     async Load(){
 
         let config = {}
-        config.db = {}
-        config.db.host = process.env.HOST || '0.0.0.0'
-        config.db.port = process.env.PORT || 3000
-        config.db.database = process.env || null
-        config.db.password = process.env || null
-        config.db.user = process.env || 'postgres'
+
+        config.port = 3000
+
+        config.bd = {}
+        config.bd.host = process.env.POSTGRES_HOST 
+        config.bd.port = process.env.POSTGRES_PORT 
+        config.bd.database = process.env.POSTGRES_DATABASE 
+        config.bd.password = process.env.POSTGRES_PASSWORD 
+        config.bd.user = process.env.POSTGRES_USER 
         
 
         return config

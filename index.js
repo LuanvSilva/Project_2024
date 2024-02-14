@@ -1,12 +1,14 @@
 import express from 'express'
 import  http  from 'http'
-import  Config  from './config/config.js'
-import  Router  from './routers/routers.js'
+import  Config  from './src/config/config.js'
+import  Router  from './src/routers/routers.js'
+import dotenv from 'dotenv'
 
 class App {
 
   constructor() {
-
+    
+    dotenv.config()
     this.express = express()
     this.http = http
     this.config = new Config()
@@ -31,13 +33,13 @@ class App {
   async Load() {
 
     let dados = await this.config.Load()
-    await this.StartServer(this.express, dados.db.port, dados.db.host)
+    await this.StartServer(this.express, dados.port)
 
 
   }
 
 
-  async StartServer(app, port, host) {
+  async StartServer(app, port) {
 
       this.server = this.http.createServer(app)
       this.server.listen(port)
