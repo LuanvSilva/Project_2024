@@ -27,10 +27,9 @@ class Router {
 
             } catch (error) {
 
-                console.log("Erro no get da rota /")
-                console.log("Erro: ", error)
-
-                
+                console.log("Erro no get da rota /", error)
+                throw error
+ 
             }
     
         })

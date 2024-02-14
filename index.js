@@ -7,7 +7,6 @@ import dotenv from 'dotenv'
 class App {
 
   constructor() {
-    
     dotenv.config()
     this.express = express()
     this.http = http
@@ -35,9 +34,7 @@ class App {
     let dados = await this.config.Load()
     await this.StartServer(this.express, dados.port)
 
-
   }
-
 
   async StartServer(app, port) {
 

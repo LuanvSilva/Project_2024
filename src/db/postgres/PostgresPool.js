@@ -1,6 +1,5 @@
 import pg from 'pg'
 import Config from '../../config/config.js'
-import util from 'util'
 const { Pool } = pg
 
 class PostgresPool{
@@ -21,6 +20,8 @@ class PostgresPool{
             host: dados.bd.host
         })
 
+        return this.connection
+
     }
 
     async Query(query, params){
@@ -30,7 +31,7 @@ class PostgresPool{
             const client = await  this.connection.connect()
             const result = await  client.query(query, params)
 
-            await  client.release()
+            await client.release()
 
             return result
 
