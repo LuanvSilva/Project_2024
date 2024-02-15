@@ -34,10 +34,25 @@ class Router {
     
         })
 
-        this.router.post( "/clientes/[id]/transacoes", (req, res) =>{
+        this.router.post( "/users", async (req, res) =>{
 
-            const data = req.body
-            console.log(data)
+            try {
+
+                let user_controller = new UserController()
+
+                let result = await user_controller.CreateUser(req)
+        
+                if (result != false) {
+        
+                    res.end(JSON.stringify(result.rows))
+                }
+
+            } catch (error) {
+
+                console.log("Erro no get da rota /", error)
+                throw error
+ 
+            }
             res.json()
 
         })

@@ -28,6 +28,29 @@ class User extends Dao{
 
        return retorno 
     }
+
+    async CreateUser(createUserParams){
+
+        let params = []
+        let retorno = new Array()
+
+        try {
+
+            retorno = await this.Query('INSERT INTO users (ID, first_name, last_name, email, password) VALUES (1$, 2$, 3$ ,4$, 5$) ',
+            [[ID, first_name, last_name, email, password] = createUserParams])
+
+            console.log(retorno.rows)
+
+
+        } catch (error) {
+            
+            retorno = false
+            console.error(error)
+            throw error
+        }
+
+       return retorno 
+    }
 }
 
 export default User
