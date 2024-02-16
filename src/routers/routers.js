@@ -5,6 +5,7 @@ import UserController from "../controller/userController.js"
 class Router {
 
     constructor() {
+
         this.router = express.Router()
         this.app = express()   
         
@@ -34,31 +35,24 @@ class Router {
     
         })
 
-        this.router.post( "/users", async (req, res) =>{
+        this.router.post( "/api/users", async (req, res) =>{
 
             try {
 
                 let user_controller = new UserController()
 
                 let result = await user_controller.CreateUser(req)
-        
-                if (result != false) {
-        
-                    res.end(JSON.stringify(result.rows))
-                }
+                
+               res.json(result)
 
             } catch (error) {
 
-                console.log("Erro no get da rota /", error)
+                console.log("Erro na rota post /api/users", error)
                 throw error
- 
             }
-            res.json()
-
         })
 
             
-
         return this.router
     }
 

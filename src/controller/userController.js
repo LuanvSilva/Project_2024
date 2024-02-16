@@ -36,9 +36,9 @@ class UserController {
             const hashedPasssword = await bcrypt.hash(createUserParams.password, 10)
 
             let user = {
-               id: createUserParams.ID,
+               id: userId,
                first_name : createUserParams.first_name,
-               lastName: createUserParams.last_name,
+               last_name: createUserParams.last_name,
                email: createUserParams.email,
                password: hashedPasssword
             }
