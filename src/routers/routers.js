@@ -4,7 +4,7 @@ import UserController from "../controller/userController.js"
 import validator from "validator"
 import Exception from "../util/Error.js"
 
-class Router {
+class Router{
 
     constructor() {
 

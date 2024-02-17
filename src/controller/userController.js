@@ -5,15 +5,18 @@ import Exception from '../util/Error.js'
 
 class UserController {
 
+    constructor(){
+        this.user_repository = new User()
+    }
+
      async GetUser(req){
         
         let retorno
 
         try {
 
-            let user_repository = new User()
             let dados = req.params.userId
-            retorno = await user_repository.GetUserById(dados)
+            retorno = await this.user_repository.GetUserById(dados)
 
         } catch (error) {
 
@@ -30,13 +33,12 @@ class UserController {
 
         try {
 
-            const createUserParams = req.body
+            const params = req.body
 
-            let user_repository = new User()
 
-            retorno = await user_repository.GetUserByEmail(createUserParams.email)
+            retorno = await this.user_repository.GetUserByEmail(params.email)
 
-            if (retorno) throw new Exception('The provided e-mail is already in use')
+            if (retorno) throw new Exception(`The ${params.email} e-mail is already in use`, "email already registered")
 
             const userId = uuidv4()
 
@@ -48,7 +50,7 @@ class UserController {
                 password: hashedPasssword
             }
 
-            retorno = await user_repository.CreateUser(user)
+            retorno = await this.user_repository.CreateUser(user)
          
 
         } catch (error) {

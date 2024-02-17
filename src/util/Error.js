@@ -4,6 +4,7 @@ class Exception extends Error {
     constructor(error, name){
 
         super(error)
+        this.name = name
     }
 }
 
