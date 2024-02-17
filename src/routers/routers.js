@@ -19,18 +19,16 @@ class Router {
 
             try {
 
+                const isIdValid  = await validator.isUUID(req.params.userId)
+
+                if(!isIdValid) return res.status(400).json({ error: 'Invalid user ID' })
+                    
                 let user_controller = new UserController()
 
                 let result = await user_controller.GetUser(req)
-        
-                if (result) {
-            
-                   return res.status(200).json(result) 
+                
+                return result ? res.status(200).json(result) : res.status(404).json({ error: "User not found!" })
 
-                }else{
-
-                    return res.status(404).json({ error:"User not found!" })
-                }
 
             } catch (error) {
 

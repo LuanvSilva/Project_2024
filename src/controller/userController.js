@@ -16,8 +16,8 @@ class UserController {
 
         } catch (error) {
 
-            retorno = false
             console.log(`Erro no retorno da função GetUser() controller  ${error}`)
+            throw error
         }
         
         return retorno
@@ -49,8 +49,8 @@ class UserController {
 
         } catch (error) {
 
-            retorno = false
             console.log(`Erro no retorno da função CreateUser() controller  ${error}`)
+            throw error
         }
         
         return retorno

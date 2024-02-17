@@ -27,7 +27,6 @@ class User extends Dao{
 
     async CreateUser(createUserParams){
 
-        let params = []
         let retorno = new Array()
 
         try {
