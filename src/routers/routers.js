@@ -8,7 +8,6 @@ class Router {
     constructor() {
 
         this.router = express.Router()
-        this.app = express()   
         
     }
 
@@ -16,7 +15,7 @@ class Router {
 
     let self = this
     
-        this.router.get("/", async (req, res)=>{
+        this.router.get("/api/users/:userId", async (req, res)=>{
 
             try {
 
@@ -24,14 +23,18 @@ class Router {
 
                 let result = await user_controller.GetUser(req)
         
-                if (result != false) {
-        
-                    res.end(JSON.stringify(result.rows))
+                if (result) {
+            
+                   return res.status(200).json(result) 
+
+                }else{
+
+                    return res.status(404).json({ error:"User not found!" })
                 }
 
             } catch (error) {
 
-                console.log("Erro no get da rota /", error)
+                console.log("Error router /api/users/", error)
                 throw error
  
             }
@@ -66,7 +69,7 @@ class Router {
 
             } catch (error) {
 
-                console.log("Erro na rota post /api/users", error)
+                console.log("Erro router post /api/users", error)
                 throw error
             }
         })

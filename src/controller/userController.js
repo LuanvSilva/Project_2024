@@ -11,7 +11,7 @@ class UserController {
         try {
 
             let user_repository = new User()
-            let dados = req.body
+            let dados = req.params.userId
             retorno = await user_repository.GetUser(dados)
 
         } catch (error) {

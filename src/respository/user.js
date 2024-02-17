@@ -6,19 +6,16 @@ class User extends Dao{
         super()
     }
 
-    async GetUser(dados){
+    async GetUser(userId){
 
-        let params = []
         let retorno = new Array()
         
-        let query = 'SELECT * FROM USERS'
-
         try {
 
-            retorno = await this.Query(query, params)
-            console.log(retorno.rows)
+            retorno = await this.Query("SELECT * FROM users WHERE  id= $1", [ userId ])
 
-
+           return retorno = retorno ? retorno.rows[0] : false
+    
         } catch (error) {
             
             retorno = false
@@ -26,7 +23,6 @@ class User extends Dao{
             throw error
         }
 
-       return retorno 
     }
 
     async CreateUser(createUserParams){
@@ -46,19 +42,17 @@ class User extends Dao{
                 ]
             )
 
-            retorno = await this.Query("SELECT * FROM users WHERE  id= $1",[ createUserParams.id ])
+            retorno = await this.Query("SELECT * FROM users WHERE  id= $1", [ createUserParams.id ])
 
-            console.log(retorno[0])
+            return retorno = retorno ? retorno.rows[0] : false
 
 
         } catch (error) {
-            
-            retorno = false
+        
             console.error(error)
             throw error
         }
-
-       return retorno.rows[0] 
+ 
     }
 }
 
