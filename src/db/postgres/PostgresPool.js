@@ -1,23 +1,20 @@
 import pg from 'pg'
-import Config from '../../config/config.js'
 const { Pool } = pg
 
 class PostgresPool{
 
     constructor(){
 
-        this.config = new Config()
     }
 
     async Connection(){
 
-        const dados = await this.config.Load()
         this.connection = new Pool({
-            port: dados.bd.port,
-            user: dados.bd.user,
-            password: dados.bd.password,
-            database: dados.bd.database,
-            host: dados.bd.host
+            port: process.env.POSTGRES_PORT,
+            user: process.env.POSTGRES_USER,
+            password: process.env.POSTGRES_PASSWORD,
+            database: process.env.POSTGRES_DATABASE,
+            host: process.env.POSTGRES_HOST
         })
 
         return this.connection

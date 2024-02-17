@@ -1,6 +1,5 @@
 import express from 'express'
 import  http  from 'http'
-import  Config  from './src/config/config.js'
 import  Router  from './src/routers/routers.js'
 import dotenv from 'dotenv'
 
@@ -10,7 +9,6 @@ class App {
     dotenv.config()
     this.express = express()
     this.http = http
-    this.config = new Config()
     this.Middlawares()
     this.Routes()
 
@@ -29,20 +27,14 @@ class App {
     this.express.use('/', await this.routers.LoadRouter()) 
   }
 
-  async Load() {
 
-    let dados = await this.config.Load()
-    await this.StartServer(this.express, dados.port)
+  async StartServer() {
 
-  }
-
-  async StartServer(app, port) {
-
-      this.server = this.http.createServer(app)
-      this.server.listen(port)
-      console.log( `Servidor rodando na porta ${port}`)
+      this.server = this.http.createServer(this.express)
+      this.server.listen(process.env.PORT)
+      console.log( `Servidor rodando na porta ${process.env.PORT}`)
 
   }
 
 }
-new App().Load()
+new App().StartServer()

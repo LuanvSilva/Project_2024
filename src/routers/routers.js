@@ -1,14 +1,16 @@
-// No seu arquivo routes.mjs
 import  express  from "express"
 import UserController from "../controller/userController.js"
 import validator from "validator"
 import Exception from "../util/Error.js"
+import HelperUser from "../controller/helper/helperUser.js"
 
 class Router{
 
     constructor() {
 
         this.router = express.Router()
+        this.user_controller = new UserController()
+        this.helper_User = new HelperUser()
         
     }
 
@@ -20,13 +22,9 @@ class Router{
 
             try {
 
-                const isIdValid  = await validator.isUUID(req.params.userId)
+                this.helper_User.IsIdValid(req.params.userId)  
 
-                if(!isIdValid) return res.status(400).json({ error: 'Invalid user ID' })
-                    
-                let user_controller = new UserController()
-
-                let result = await user_controller.GetUserById(req)
+                let result = await this.user_controller.GetUserById(req)
                 
                 return result ? res.status(200).json(result) : res.status(404).json({ error: "User not found!" })
 
@@ -46,23 +44,13 @@ class Router{
 
             try {
 
-                const emailIsValid = validator.isEmail(params.email)
-                const passwordIsValid = params.password.length
+                if(params.email || params.password) {
 
-                if (!emailIsValid){
-                    
-                    return res.status(400).json({err:"Invalid e-mail. Please provid a valid one."})
+                    await this.helper_User.ValidEmailAndPassword(params.email, params.password)
+
                 }
 
-                if(passwordIsValid < 6){
-
-                    return res.status(400).json({err: "Password too short! It must contain at least 6 characters."})
-                 
-                }
-
-                let user_controller = new UserController()
-
-                let result = await user_controller.CreateUser(req)
+                let result = await this.user_controller.CreateUser(req)
                 
                 return res.status(201).json(result)
 
@@ -71,6 +59,36 @@ class Router{
                if(error instanceof Exception) return res.status(401).json({ message: error.message })
             }   
                 
+        })
+
+        this.router.patch("/api/users/:userId", async (req, res)=>{
+
+            let params = req.body
+
+            try {
+
+                this.helper_User.IsIdValid(req.params.userId)  
+
+                const allowedFields = ['first_name', 'last_name','email', 'password']
+
+                const someFieldsNotAllowed = Object.keys(params).some((fieldName) => !allowedFields.includes(fieldName))
+              
+                if(someFieldsNotAllowed) res.status(400).json({ error : "Invalid field"})
+
+        
+                if(params.email || params.password) {
+
+                    await this.helper_User.ValidEmailAndPassword(params.email, params.password)
+                }
+
+                let result = await this.user_controller.UpdateUserById(req, req.params.userId)
+                
+                return res.status(201).json(result)
+
+            } catch (error) {
+
+               if(error instanceof Exception) return res.status(401).json({ message: error.message })
+            }   
         })
 
             

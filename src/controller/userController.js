@@ -1,15 +1,15 @@
 import User from  '../respository/user.js'
 import { v4 as uuidv4 } from 'uuid'
-import bcrypt from 'bcrypt'
-import Exception from '../util/Error.js'
+import HelperUser from './helper/helperUser.js'
 
-class UserController {
+class UserController extends HelperUser{
 
     constructor(){
+        super()
         this.user_repository = new User()
     }
 
-     async GetUser(req){
+     async GetUserById(req){
         
         let retorno
 
@@ -33,16 +33,13 @@ class UserController {
 
         try {
 
-            const params = req.body
+            let createUserParams = req.body
 
-
-            retorno = await this.user_repository.GetUserByEmail(params.email)
-
-            if (retorno) throw new Exception(`The ${params.email} e-mail is already in use`, "email already registered")
+            await this.CheckEmailExists(createUserParams.email, retorno)
 
             const userId = uuidv4()
 
-            const hashedPasssword = await bcrypt.hash(createUserParams.password, 10)
+            const hashedPasssword = await this.PasswordCreation(createUserParams.password)
 
             let user = {
                 id: userId,
@@ -61,6 +58,36 @@ class UserController {
         
         return retorno
    }
+
+   async UpdateUserById(req, userId){
+
+    let retorno
+
+    try {
+
+        let updateUserParams = req.body
+
+        await this.CheckEmailExists(updateUserParams.email, retorno)
+
+        let user = { ...updateUserParams }
+
+        if(updateUserParams.password){
+
+            user.password = await this.PasswordCreation(updateUserParams.password)
+        }
+        
+        retorno = await this.user_repository.UpdateUserById(user, userId)
+        
+
+    } catch (error) {
+
+        console.log(`Erro return function UpdateUserById() controller  ${error}`)
+        throw error
+    }
+    
+    return retorno
+   }
 }
+
 
 export default UserController

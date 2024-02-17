@@ -73,7 +73,7 @@ class User extends Dao{
  
     }
 
-    async UpdateUserById(userId, params){
+    async UpdateUserById(params, userId){
 
         let retorno = new Array()
         
