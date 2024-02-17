@@ -12,11 +12,11 @@ class UserController {
 
             let user_repository = new User()
             let dados = req.params.userId
-            retorno = await user_repository.GetUser(dados)
+            retorno = await user_repository.GetUserById(dados)
 
         } catch (error) {
 
-            console.log(`Erro no retorno da função GetUser() controller  ${error}`)
+            console.log(`Erro no retorno da função GetUserById() controller  ${error}`)
             throw error
         }
         
@@ -31,21 +31,24 @@ class UserController {
 
             const createUserParams = req.body
 
+            let user_repository = new User()
+
+            retorno = await user_repository.GetUserByEmail(createUserParams.email)
+
+            if (retorno) throw Error('The provided e-mail is already in use')
+            
             const userId = uuidv4()
 
             const hashedPasssword = await bcrypt.hash(createUserParams.password, 10)
 
             let user = {
-               id: userId,
-               first_name : createUserParams.first_name,
-               last_name: createUserParams.last_name,
-               email: createUserParams.email,
-               password: hashedPasssword
+                id: userId,
+                ...createUserParams,
+                password: hashedPasssword
             }
 
-            let user_repository = new User()
-
             retorno = await user_repository.CreateUser(user)
+         
 
         } catch (error) {
 

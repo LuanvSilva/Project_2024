@@ -25,7 +25,7 @@ class Router {
                     
                 let user_controller = new UserController()
 
-                let result = await user_controller.GetUser(req)
+                let result = await user_controller.GetUserById(req)
                 
                 return result ? res.status(200).json(result) : res.status(404).json({ error: "User not found!" })
 
