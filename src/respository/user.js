@@ -72,6 +72,37 @@ class User extends Dao{
         }
  
     }
+
+    async UpdateUserById(userId, params){
+
+        let retorno = new Array()
+        
+        try {
+            const updateFilds = new Array()
+            const updateValues = new Array()
+            
+            Object.keys(params).forEach((key)=>{
+                updateFilds.push(`${key} = $${updateValues.length  + 1}`)
+                updateValues.push( params[key] )   
+            })
+
+            updateValues.push(userId)
+            
+            let query = `
+            UPDATE users SET ${updateFilds.join(", ")} WHERE ID = $${updateValues.length} RETURNING *`  
+
+            retorno = await this.Query(query, updateValues)
+
+           return retorno = retorno ? retorno.rows[0] : false
+    
+        } catch (error) {
+            
+            retorno = false
+            console.error(error)
+            throw error
+        }
+
+    }
 }
 
 export default User
