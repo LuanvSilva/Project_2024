@@ -1,6 +1,7 @@
 import User from  '../respository/user.js'
 import { v4 as uuidv4 } from 'uuid'
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt'
+import Exception from '../util/Error.js'
 
 class UserController {
 
@@ -35,8 +36,8 @@ class UserController {
 
             retorno = await user_repository.GetUserByEmail(createUserParams.email)
 
-            if (retorno) throw Error('The provided e-mail is already in use')
-            
+            if (retorno) throw new Exception('The provided e-mail is already in use')
+
             const userId = uuidv4()
 
             const hashedPasssword = await bcrypt.hash(createUserParams.password, 10)
@@ -52,7 +53,7 @@ class UserController {
 
         } catch (error) {
 
-            console.log(`Erro no retorno da função CreateUser() controller  ${error}`)
+            console.log(`Erro return function CreateUser() controller  ${error}`)
             throw error
         }
         

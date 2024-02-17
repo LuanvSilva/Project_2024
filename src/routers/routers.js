@@ -2,6 +2,7 @@
 import  express  from "express"
 import UserController from "../controller/userController.js"
 import validator from "validator"
+import Exception from "../util/Error.js"
 
 class Router {
 
@@ -67,9 +68,9 @@ class Router {
 
             } catch (error) {
 
-                console.log("Erro router post /api/users", error)
-                throw error
-            }
+               if(error instanceof Exception) return res.status(401).json({ message: error.message })
+            }   
+                
         })
 
             
