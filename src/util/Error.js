@@ -1,11 +1,13 @@
 
-class Exception extends Error {
-    
-    constructor(error, name){
+class CustomError  extends Error {
 
-        super(error)
-        this.name = name
+    constructor(message) {
+
+        super(message)
+
+        this.name = this.constructor.name
     }
 }
 
-export default Exception
+
+export default CustomError 

@@ -1,4 +1,4 @@
-import Exception from '../../util/Error.js'
+import CustomError  from '../../util/Error.js'
 import User from '../../respository/user.js'
 import bcrypt from 'bcrypt'
 import validator from "validator"
@@ -18,7 +18,7 @@ class HelperUser {
         }
         if (retorno) {
 
-            throw new Exception(`The ${email} e-mail is already in use`, "email already registered")
+            throw new CustomError(`The ${email} e-mail is already in use`, "email already registered")
         }
     }
 
@@ -35,11 +35,11 @@ class HelperUser {
 
         if(password){
 
-            const passwordIsnotValid =password.length
+            const passwordIsnotValid = password.length
 
             if(passwordIsnotValid < 6){
 
-                return res.status(400).json({err: "Password too short! It must contain at least 6 characters."})
+                throw new CustomError("Password too short! It must contain at least 6 characters.")
              
             }
         }
@@ -49,7 +49,7 @@ class HelperUser {
 
             if (!emailIsValid){
                 
-                return res.status(400).json({err:"Invalid e-mail. Please provid a valid one."})
+                throw new CustomError("Invalid e-mail. Please provid a valid one.")
             }
 
         }
@@ -61,7 +61,7 @@ class HelperUser {
                 
         if(!isIdValid){
 
-            return res.status(400).json({ error: 'Invalid user ID' })
+            throw new CustomError("Invalid user ID.")
         } 
     }
 }
