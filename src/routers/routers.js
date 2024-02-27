@@ -15,7 +15,7 @@ class Router{
             
             let result = await this.user_controller.GetUserById(req)
             
-            return  res.status(200).json(result)
+            return  res.json(result)
   
         })
 
@@ -23,7 +23,7 @@ class Router{
 
             let result = await this.user_controller.CreateUser(req)
             
-            return res.status(201).json(result)
+            return res.json(result)
                 
         })
 
@@ -31,8 +31,16 @@ class Router{
 
             let result = await this.user_controller.UpdateUserById(req, req.params.userId)
 
-            return res.status(201).json(result)
+            return res.json(result)
 
+        })
+
+        this.router.delete( "/api/users/:userId", async (req, res) =>{
+
+            let result = await this.user_controller.CreateUser(req)
+            
+            return res.json(result)
+                
         })
 
             

@@ -1,4 +1,3 @@
-import CustomError  from '../../util/Error.js'
 import User from '../../respository/user.js'
 import bcrypt from 'bcrypt'
 import validator from "validator"
@@ -6,11 +5,12 @@ import validator from "validator"
 class HelperUser {
 
     constructor(){
-        
+    
         this.user_repository = new User()
     }
 
     async CheckEmailExists(email, retorno) {
+        let data = new Object()
 
         if(email) {
 
@@ -18,7 +18,9 @@ class HelperUser {
         }
         if (retorno) {
 
-            throw new CustomError(`The ${email} e-mail is already in use`, "email already registered")
+            data.sucess = false
+            data.message = `The ${email} e-mail is already in use`
+            return  data
         }
     }
 
@@ -32,6 +34,7 @@ class HelperUser {
     }
 
     async ValidEmailAndPassword(email, password){
+        let data = new Object()
 
         if(password){
 
@@ -39,8 +42,9 @@ class HelperUser {
 
             if(passwordIsnotValid < 6){
 
-                throw new CustomError("Password too short! It must contain at least 6 characters.")
-             
+                data.sucess = false
+                data.message = "Password too short! It must contain at least 6 characters."
+                return  data  
             }
         }
         if(email){
@@ -48,8 +52,10 @@ class HelperUser {
             const emailIsValid = validator.isEmail(email)
 
             if (!emailIsValid){
-                
-                throw new CustomError("Invalid e-mail. Please provid a valid one.")
+
+                data.sucess = false
+                data.message = "Invalid e-mail. Please provid a valid one."
+                return  data  
             }
 
         }
@@ -57,11 +63,14 @@ class HelperUser {
 
     async IsIdValid(userId){
 
+        let data = new Object()
         const isIdValid  = await validator.isUUID(userId)
                 
         if(!isIdValid){
 
-            throw new CustomError("Invalid user ID.")
+            data.sucess = false
+            data.message = "Invalid user ID."
+            return data
         } 
     }
 }

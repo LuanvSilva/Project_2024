@@ -31,28 +31,32 @@ class UserController {
 
    async CreateUser(req){
 
-    let params = req.body
     let retorno
+    let data = {}
+    let params = req.body
 
         try {
 
             if(params.email || params.password) {
 
-                await this.helper_User.ValidEmailAndPassword(params.email, params.password)
+               let response = await this.helper_User.ValidEmailAndPassword(params.email, params.password)
+
+               if (response && response.sucess == false) return response
 
             }
 
-            let createUserParams = req.body
-
-            await this.helper_User.CheckEmailExists(createUserParams.email, retorno)
+            let response = await this.helper_User.CheckEmailExists(params.email, retorno)
+            
+            if (response && response.sucess == false) return response
 
             const userId = uuidv4()
 
-            const hashedPasssword = await this.helper_User.PasswordCreation(createUserParams.password)
+            const hashedPasssword = await this.helper_User.PasswordCreation(params.password)
 
             let user = {
+
                 id: userId,
-                ...createUserParams,
+                ...params,
                 password: hashedPasssword
             }
 
@@ -91,18 +95,20 @@ class UserController {
 
         if(params.email || params.password) {
 
-            await this.helper_User.ValidEmailAndPassword(params.email, params.password)
+            let response = await this.helper_User.ValidEmailAndPassword(params.email, params.password)
+
+            if (response && response.sucess == false) return response
+                
+                
         }
 
-        let updateUserParams = req.body
+        await this.helper_User.CheckEmailExists(params.email, retorno)
 
-        await this.helper_User.CheckEmailExists(updateUserParams.email, retorno)
+        let user = { ...params }
 
-        let user = { ...updateUserParams }
+        if(params.password){
 
-        if(updateUserParams.password){
-
-            user.password = await this.helper_User.PasswordCreation(updateUserParams.password)
+            user.password = await this.helper_User.PasswordCreation(params.password)
         }
         
         retorno = await this.user_repository.UpdateUserById(user, userId)

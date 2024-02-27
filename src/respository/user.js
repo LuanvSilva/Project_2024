@@ -103,6 +103,27 @@ class User extends Dao{
         }
 
     }
+
+    async DeleteUserById(id){
+
+        let retorno = new Array()
+        
+        try {
+
+            retorno = await this.Query("DELETE * FROM users WHERE  id = $1 RETURNING *", [ id ])
+
+            retorno = retorno ? retorno.rows[0] : false
+    
+        } catch (error) {
+            
+            retorno = false
+            console.error(error)
+            throw error
+        }
+
+       return retorno
+
+    }
 }
 
 export default User
