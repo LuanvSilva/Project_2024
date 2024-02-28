@@ -15,7 +15,8 @@ class UserController {
 
         try {
 
-            this.helper_User.IsIdValid(req.params.userId) 
+            const response = await this.helper_User.IsIdValid(req.params.userId) 
+            if (response && response.sucess == false) return response
 
             let dados = req.params.userId
             retorno = await this.user_repository.GetUserById(dados)
@@ -124,6 +125,28 @@ class UserController {
     } catch (error) {
 
         console.log(`Erro return function UpdateUserById() controller  ${error}`)
+        throw error
+    }
+    
+    return retorno
+   }
+
+   async DeleteUserById(req){
+
+    let retorno
+
+    try {
+
+        let dados = req.params.userId
+        
+        let response = await this.helper_User.IsIdValid(dados) 
+        if (response && response.sucess == false) return response
+
+        retorno = await this.user_repository.DeleteUserById(dados)
+
+    } catch (error) {
+
+        console.log(`Erro no retorno da função DeleteUserById() controller  ${error}`)
         throw error
     }
     

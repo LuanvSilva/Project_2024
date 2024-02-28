@@ -31,10 +31,10 @@ class User extends Dao{
         
         try {
 
-            retorno = await this.Query("SELECT * FROM users WHERE  email = $1", [ email ])
+            const result = await this.Query("SELECT * FROM users WHERE  email = $1", [ email ])
 
-           return retorno = retorno ? retorno.rows[0] : false
-    
+            return result ? result.rows[0] : false
+           
         } catch (error) {
             
             retorno = false
@@ -60,9 +60,8 @@ class User extends Dao{
                 ]
             )
 
-            retorno = await this.Query("SELECT * FROM users WHERE  id= $1", [ createUserParams.id ])
-
-            return retorno = retorno ? retorno.rows[0] : false
+            const result = await this.Query("SELECT * FROM users WHERE  id= $1", [ createUserParams.id ])
+            return result ? result.rows[0] : false
 
 
         } catch (error) {
@@ -91,9 +90,8 @@ class User extends Dao{
             let query = `
             UPDATE users SET ${updateFilds.join(", ")} WHERE ID = $${updateValues.length} RETURNING *`  
 
-            retorno = await this.Query(query, updateValues)
-
-           return retorno = retorno ? retorno.rows[0] : false
+            const result = await this.Query(query, updateValues)
+            return result ? result.rows[0] : false
     
         } catch (error) {
             
@@ -106,13 +104,23 @@ class User extends Dao{
 
     async DeleteUserById(id){
 
-        let retorno = new Array()
+        let data = new Object()
         
         try {
+            
+            const result = await this.Query("DELETE FROM users WHERE id = $1 RETURNING *", [id])
 
-            retorno = await this.Query("DELETE * FROM users WHERE  id = $1 RETURNING *", [ id ])
+            if(result && result.rows.length){
 
-            retorno = retorno ? retorno.rows[0] : false
+                data.dados = result.rows[0]
+                data.success = true
+            }else{
+
+                data.message = "User Not Found"
+                data.success = false
+            }
+
+            return data
     
         } catch (error) {
             
@@ -121,7 +129,6 @@ class User extends Dao{
             throw error
         }
 
-       return retorno
 
     }
 }
