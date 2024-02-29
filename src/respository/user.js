@@ -21,6 +21,7 @@ class User extends Dao{
             retorno = false
             console.error(error)
             throw error
+            
         }
 
     }

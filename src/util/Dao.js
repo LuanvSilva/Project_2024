@@ -1,26 +1,21 @@
 import PostgresPool from "../db/postgres/PostgresPool.js";
 
 
-class Dao extends PostgresPool{
+class Dao {
 
     constructor(){
-        super()
-
-        this.postgres = new PostgresPool()
+    
+        let postgres = new PostgresPool()
+        this.conn = postgres.Connection()
     }
 
-    async Query(sql, params) {
 
-        this.conn = await this.postgres.Connection()
-        return await this.postgres.Query(sql, params)
+    async Query(sql, params) {
+        return (await this.conn).query(sql, params)
     }
 
     async BeginTransaction() {
         (await this.conn).beginTransaction()
-    }
-
-    async Close() {
-        (await this.conn).close()
     }
 
     async Commit() {

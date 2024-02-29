@@ -1,12 +1,11 @@
-import User from  '../respository/user.js'
 import { v4 as uuidv4 } from 'uuid'
-import HelperUser from './helper/helperUser.js'
 
 class UserController {
 
-    constructor(){
-        this.user_repository = new User()
-        this.helper_User = new HelperUser()
+    constructor(user_repository, helper_User){
+        
+        this.user_repository = user_repository
+        this.helper_User = helper_User
     }
 
      async GetUserById(req){
@@ -41,13 +40,11 @@ class UserController {
             if(params.email || params.password) {
 
                let response = await this.helper_User.ValidEmailAndPassword(params.email, params.password)
-
                if (response && response.sucess == false) return response
 
             }
 
             let response = await this.helper_User.CheckEmailExists(params.email, retorno)
-            
             if (response && response.sucess == false) return response
 
             const userId = uuidv4()
@@ -97,10 +94,7 @@ class UserController {
         if(params.email || params.password) {
 
             let response = await this.helper_User.ValidEmailAndPassword(params.email, params.password)
-
-            if (response && response.sucess == false) return response
-                
-                
+            if (response && response.sucess == false) return response      
         }
 
         await this.helper_User.CheckEmailExists(params.email, retorno)

@@ -1,14 +1,16 @@
 import  express  from "express"
 import UserController from "../controller/userController.js"
+import User from  '../respository/user.js'
+import HelperUser from '../controller/helper/helperUser.js';
 class Router{
 
     constructor() {
 
         this.router = express.Router()
-        this.user_controller = new UserController()
+        this.user_controller = new UserController(new User(), new HelperUser())
         
     }
-
+        
  async LoadRouter(){
     
         this.router.get("/api/users/:userId", async (req, res)=>{

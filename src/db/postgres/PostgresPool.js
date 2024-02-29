@@ -1,5 +1,6 @@
 import pg from 'pg'
 const { Pool } = pg
+import util  from 'util'
 
 class PostgresPool{
 
@@ -9,7 +10,7 @@ class PostgresPool{
 
     async Connection(){
 
-        this.connection = new Pool({
+        const connection = new Pool({
             port: process.env.POSTGRES_PORT,
             user: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
@@ -17,30 +18,29 @@ class PostgresPool{
             host: process.env.POSTGRES_HOST
         })
 
-        return this.connection
+        process.on('SIGINT', () => {
+            connection.end()
+            process.exit(0)
+          })
 
-    }
-
-    async Query(query, params){
-
-        try {
-            
-            const client = await  this.connection.connect()
-            const result = await  client.query(query, params)
-
-            await client.release()
-
-            return result
-
-        } catch (error) {
-
-            console.log(`Erro na query: ${error}`)
+        return {
+            query( sql, args ) {
+              return util.promisify( connection.query ).call( connection, sql, args )
+            },
+            beginTransaction() {
+              return util.promisify( connection.beginTransaction ).call( connection )
+            },
+            commit() {
+              return util.promisify( connection.commit ).call( connection )
+            },
+            rollback() {
+              return util.promisify( connection.rollback ).call( connection )
+            }
+          }
         }
 
-        
-    }
-
-
 }
+
+
 
 export default PostgresPool
