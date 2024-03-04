@@ -1,11 +1,15 @@
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4, validate } from 'uuid'
+import User from  '../respository/user.js'
+import HelperUser from '../controller/helper/helperUser.js';
+import MongoPool from '../db/postgres/MongoPool.js'
 
 class UserController {
 
-    constructor(user_repository, helper_User){
+    constructor(){
         
-        this.user_repository = user_repository
-        this.helper_User = helper_User
+        this.user_repository = new User()
+        this.helper_User =  new HelperUser()
+        this.mongo = new MongoPool()
     }
 
      async GetUserById(req){
@@ -84,7 +88,7 @@ class UserController {
 
         const someFieldsNotAllowed = Object.keys(params).some((fieldName) => !allowedFields.includes(fieldName))
       
-        if(someFieldsNotAllowed == false){
+        if(someFieldsNotAllowed ){
 
             data.sucess = false
             data.message = "Not parameter allowd"
@@ -97,7 +101,8 @@ class UserController {
             if (response && response.sucess == false) return response      
         }
 
-        await this.helper_User.CheckEmailExists(params.email, retorno)
+        let response = await this.helper_User.CheckEmailExists(params.email, retorno)
+        if (response && response.sucess == false) return response
 
         let user = { ...params }
 
@@ -146,6 +151,25 @@ class UserController {
     
     return retorno
    }
+
+   async CreateTransaction(req) {
+
+    try {
+
+        const mongooDb = await this.mongo.getConnection("transactions")
+
+        const params = req.body
+
+        const retorno = await this.user_repository.CreateTransaction(mongooDb, params)
+
+        return retorno
+
+    } catch (error) {
+
+        console.error(`Erro na função CreateTransaction() do controller: ${error}`)
+        throw error
+    }
+}
 }
 
 

@@ -1,4 +1,4 @@
-import Dao from "../util/Dao.js";
+import Dao from "../util/Dao.js"
 
 class User extends Dao{
 
@@ -21,7 +21,7 @@ class User extends Dao{
             retorno = false
             console.error(error)
             throw error
-            
+
         }
 
     }
@@ -129,8 +129,26 @@ class User extends Dao{
             console.error(error)
             throw error
         }
+    }
 
+    async CreateTransaction(conn, item) {
 
+        try {
+
+            const resultado = await conn.insertOne(item)
+
+            if (resultado != null && resultado.insertedId) {
+
+                const insertedItem = await conn.findOne({_id: resultado.insertedId})
+                return insertedItem
+            }
+
+            return null
+        } catch (error) {
+            
+            console.error("Erro ao executar a função CreateTransaction() - " + error)
+            throw error
+        }
     }
 }
 

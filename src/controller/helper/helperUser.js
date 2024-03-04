@@ -73,6 +73,25 @@ class HelperUser {
             return data
         } 
     }
+
+    async AmountIsValid(amount){
+
+        const amountIsValid = validator.isCurrency(amount.toString(), 
+        {
+            digits_after_decimal: [2],
+            allow_negatives: false,
+            decimal_separator: '.', 
+        })
+
+        if(!amountIsValid){
+
+            data.sucess = false
+            data.message = "Invalid user ID."
+            return data
+        } 
+
+        return amountIsValid
+    }
 }
 
 export default HelperUser

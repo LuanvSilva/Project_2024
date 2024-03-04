@@ -1,4 +1,4 @@
-import PostgresPool from "../db/postgres/PostgresPool.js";
+import PostgresPool from "../db/postgres/PostgresPool.js"
 
 
 class Dao {
