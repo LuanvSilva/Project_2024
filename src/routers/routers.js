@@ -5,7 +5,7 @@ import TransactionsController from "../controller/transactionController.js"
 class Router{
 
     constructor() {
-
+        
         this.router = express.Router()  
     }
 
