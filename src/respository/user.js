@@ -1,6 +1,6 @@
 import Dao from "../util/Dao.js"
 
-class User extends Dao{
+class UserRepository extends Dao{
 
     constructor(){
         super()
@@ -131,25 +131,7 @@ class User extends Dao{
         }
     }
 
-    async CreateTransaction(conn, item) {
-
-        try {
-
-            const resultado = await conn.insertOne(item)
-
-            if (resultado != null && resultado.insertedId) {
-
-                const insertedItem = await conn.findOne({_id: resultado.insertedId})
-                return insertedItem
-            }
-
-            return null
-        } catch (error) {
-            
-            console.error("Erro ao executar a função CreateTransaction() - " + error)
-            throw error
-        }
-    }
+   
 }
 
-export default User
+export default UserRepository

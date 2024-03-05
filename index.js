@@ -24,7 +24,7 @@ class App {
   async Routes(){
 
     this.routers = new Router()
-    this.express.use('/', await this.routers.LoadRouter()) 
+    this.express.use('/', await this.routers.LoadRouter())
   }
 
 

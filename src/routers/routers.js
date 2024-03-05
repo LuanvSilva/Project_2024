@@ -1,5 +1,6 @@
 import  express  from "express"
 import UserController from "../controller/userController.js"
+import TransactionsController from "../controller/transactionController.js"
 
 class Router{
 
@@ -9,84 +10,82 @@ class Router{
     }
 
  async LoadRouter(){
-    
-        this.router.get("/api/users/:userId", async (req, res)=>{
 
-            try {
+    this.router.get("/api/users/:userId", async (req, res)=>{
 
-                let user_controller = new UserController()
-                let result = await user_controller.GetUserById(req)
-                return  res.json(result)
+        try {
 
-            } catch (error) {
+            let user_controller = new UserController()
+            let result = await user_controller.GetUserById(req)
+            return  res.json(result)
 
-                console.error("Erro ao processar a requisição:", error)
-                return res.status(500).json({ error: `Erro interno do ${error}` })
-            }
-  
-        })
+        } catch (error) {
 
-        this.router.post( "/api/users", async (req, res) =>{
+            console.error("Erro ao processar a requisição:", error)
+            return res.status(500).json({ error: `Erro interno do ${error}` })
+        }
 
-            try {
+    })
 
-                let user_controller = new UserController()
-                let result = await user_controller.CreateUser(req)
-                return res.json(result)
+    this.router.post( "/api/users", async (req, res) =>{
 
-            } catch (error) {
+        try {
 
-                console.error("Erro ao processar a requisição:", error)
-                return res.status(500).json({ error: `Erro interno do ${error}` })
-            }
-        })
+            let user_controller = new UserController()
+            let result = await user_controller.CreateUser(req)
+            return res.json(result)
 
-        this.router.patch("/api/users/:userId", async (req, res)=>{
+        } catch (error) {
 
-            try {
-                let user_controller = new UserController()
-                let result = await user_controller.UpdateUserById(req, req.params.userId)
-                return res.json(result)
+            console.error("Erro ao processar a requisição:", error)
+            return res.status(500).json({ error: `Erro interno do ${error}` })
+        }
+    })
 
-            } catch (error) {
+    this.router.patch("/api/users/:userId", async (req, res)=>{
 
-                console.error("Erro ao processar a requisição:", error)
-                return res.status(500).json({ error: `Erro interno do ${error}` })
-            }
-        })
+        try {
+            let user_controller = new UserController()
+            let result = await user_controller.UpdateUserById(req, req.params.userId)
+            return res.json(result)
 
-        this.router.delete( "/api/users/:userId", async (req, res) =>{
+        } catch (error) {
 
-            try {
-                let user_controller = new UserController()
-                let result = await user_controller.DeleteUserById(req)
-                return res.json(result)
+            console.error("Erro ao processar a requisição:", error)
+            return res.status(500).json({ error: `Erro interno do ${error}` })
+        }
+    })
 
-            } catch (error) {
+    this.router.delete( "/api/users/:userId", async (req, res) =>{
 
-                console.error("Erro ao processar a requisição:", error)
-                return res.status(500).json({ error: `Erro interno do ${error}` })
-            }  
-        })
+        try {
+            let user_controller = new UserController()
+            let result = await user_controller.DeleteUserById(req)
+            return res.json(result)
 
-        this.router.post("/api/transactions", async (req, res) => {
+        } catch (error) {
 
-            try {
-                
-                let user_controller = new UserController()
-                const result = await user_controller.CreateTransaction(req)
-                return res.json(result)
+            console.error("Erro ao processar a requisição:", error)
+            return res.status(500).json({ error: `Erro interno do ${error}` })
+        }  
+    })
 
-            } catch (error) {
+    this.router.post("/api/transactions", async (req, res) => {
 
-                console.error("Erro ao processar a requisição:", error)
-                return res.status(500).json({ error: `Erro interno do ${error}` })
-            }
-        })
+        try {
+            let user_controller = new TransactionsController()
+            const result = await user_controller.CreateTransaction(req)
+            return res.json(result)
 
-            
-        return this.router
-    }
+        } catch (error) {
+
+            console.error("Erro ao processar a requisição:", error)
+            return res.status(500).json({ error: `Erro interno do ${error}` })
+        }
+    })
+
+    return this.router
+ }
 
   
 

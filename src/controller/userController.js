@@ -1,15 +1,13 @@
 import { v4 as uuidv4, validate } from 'uuid'
-import User from  '../respository/user.js'
-import HelperUser from '../controller/helper/helperUser.js';
-import MongoPool from '../db/postgres/MongoPool.js'
+import UserRepository from '../respository/user.js'
+import HelperUser from '../controller/helper/helperUser.js'
 
 class UserController {
 
     constructor(){
         
-        this.user_repository = new User()
+        this.user_repository = new UserRepository()
         this.helper_User =  new HelperUser()
-        this.mongo = new MongoPool()
     }
 
      async GetUserById(req){
@@ -40,6 +38,9 @@ class UserController {
     let params = req.body
 
         try {
+
+          let userResult = await this.user_repository.GetUserById(dados)
+          if(userResult != null ) throw "Usuário já existe"
 
             if(params.email || params.password) {
 
@@ -152,24 +153,7 @@ class UserController {
     return retorno
    }
 
-   async CreateTransaction(req) {
-
-    try {
-
-        const mongooDb = await this.mongo.getConnection("transactions")
-
-        const params = req.body
-
-        const retorno = await this.user_repository.CreateTransaction(mongooDb, params)
-
-        return retorno
-
-    } catch (error) {
-
-        console.error(`Erro na função CreateTransaction() do controller: ${error}`)
-        throw error
-    }
-}
+   
 }
 
 
