@@ -37,9 +37,10 @@ class UserController {
     let data = {}
     let params = req.body
 
+
         try {
 
-          let userResult = await this.user_repository.GetUserById(dados)
+          let userResult = await this.user_repository.GetUserByEmail(params.email)
           if(userResult != null ) throw "Usuário já existe"
 
             if(params.email || params.password) {
@@ -102,8 +103,9 @@ class UserController {
             if (response && response.sucess == false) return response      
         }
 
-        let response = await this.helper_User.CheckEmailExists(params.email, retorno)
-        if (response && response.sucess == false) return response
+        let userResult = await this.user_repository.GetUserByEmail(params.email)
+        if(userResult != null ) throw `Email ${params.email} já existe`
+      
 
         let user = { ...params }
 

@@ -9,20 +9,6 @@ class HelperUser {
         this.user_repository = new User()
     }
 
-    async CheckEmailExists(email, retorno) {
-        let data = new Object()
-
-        if(email) {
-
-            retorno = await this.user_repository.GetUserByEmail(email)
-        }
-        if (retorno) {
-
-            data.sucess = false
-            data.message = `The ${email} e-mail is already in use`
-            return  data
-        }
-    }
 
     async PasswordCreation(password){
 

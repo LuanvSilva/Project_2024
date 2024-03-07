@@ -8,20 +8,17 @@ class UserRepository extends Dao{
 
     async GetUserById(userId){
 
-        let retorno = new Array()
-        
         try {
 
-            retorno = await this.Query("SELECT * FROM users WHERE  id= $1", [ userId ])
+            let retorno = await this.Query("SELECT * FROM users WHERE  id= $1", [ userId ])
 
-           return retorno = retorno ? retorno.rows[0] : false
+            return retorno = retorno ? retorno.rows[0] : false
     
         } catch (error) {
             
             retorno = false
             console.error(error)
             throw error
-
         }
 
     }
@@ -46,8 +43,6 @@ class UserRepository extends Dao{
     }
 
     async CreateUser(createUserParams){
-
-        let retorno = new Array()
 
         try {
 

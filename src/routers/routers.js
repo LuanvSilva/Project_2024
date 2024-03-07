@@ -9,7 +9,7 @@ class Router{
         this.router = express.Router()  
     }
 
- async LoadRouter(){
+ async LoadRouterUser(){
 
     this.router.get("/api/users/:userId", async (req, res)=>{
 
@@ -70,6 +70,11 @@ class Router{
         }  
     })
 
+    return this.router
+ }
+
+ async LoadRouterTransaction(){
+
     this.router.post("/api/transactions", async (req, res) => {
 
         try {
@@ -85,6 +90,7 @@ class Router{
     })
 
     return this.router
+
  }
 
   
