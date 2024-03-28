@@ -8,7 +8,7 @@ class TransactionsController{
 
         this.transactions = new TransactionsRepository()
         this.user_repository = new UserRepository()
-        this.helper_User =  new HelperUser()
+        this.helper =  new HelperUser()
 
     }
 
@@ -19,7 +19,7 @@ class TransactionsController{
             let retorno
             const params = req.body
             retorno = await this.user_repository.GetUserById(params.user_id)
-            if(!retorno) throw "User já existe"
+            if(!retorno) throw "User não existe"
             
             let result = await this.transactions.CreateTransaction(params)
     
@@ -32,6 +32,38 @@ class TransactionsController{
     
         }
     }
+
+    
+   async UpdateUserById(req, userId){
+
+    let retorno
+    let data = {}
+    let params = req.body
+
+    try {
+
+        this.helper.IsIdValid(req.params.userId)  
+
+        
+        retorno = await this.user_repository.UpdateUserById(user, userId)
+
+        if(retorno == false){
+            
+            data.sucess = false
+            data.message = "Error excuted query in database"
+            return data 
+        }
+        
+
+    } catch (error) {
+
+        console.log(`Erro return function UpdateUserById() controller  ${error}`)
+        throw error
+    }
+    
+    return retorno
+   }
+
 }
 
 export default TransactionsController

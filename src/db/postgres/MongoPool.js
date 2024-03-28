@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose, { model } from "mongoose"
 
 class MongoPool {
   constructor() {
@@ -6,20 +6,29 @@ class MongoPool {
     this.connection = null
   }
 
-  async getConnection(collection) {
+  async getConnection(collection, models) {
+    
     try {
-
+      let mongoConnection
         let mongoPool = await mongoose.createConnection(process.env.MONGO_STRING, {
             maxPoolSize: 50,
             wtimeoutMS: 2500,
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
+            useNewUrlParser: true
         })
         
         this.connection = mongoPool
-        let mongoConnection = await mongoPool.collection(collection)
+        
+        if(collection && !models){
+
+          mongoConnection = await mongoPool.collection(collection)
+
+        }else if(collection && models){
+
+          mongoConnection = await mongoPool.model(collection, models)
+        }
 
       return mongoConnection
+
     } catch (error) {
       console.error(`Error conect ing to MongoDB: ${error}`)
     }

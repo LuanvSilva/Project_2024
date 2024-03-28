@@ -78,6 +78,7 @@ class Router{
     this.router.post("/api/transactions", async (req, res) => {
 
         try {
+            
             let user_controller = new TransactionsController()
             const result = await user_controller.CreateTransaction(req)
             return res.json(result)
